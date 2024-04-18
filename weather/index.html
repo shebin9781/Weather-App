@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="/style1.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+</head>
+<body>
+    <div id="result" class="container">
+        <div class="weather-header">
+            <form class="weather-search">
+                <input id="search1" onkeypress="mykey(event)" type="text" placeholder="search for a city..." class="weather-searchform" >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="button" onclick="weather()" class="btn btn-secondary ms-3" value="search">
+            </form>
+            <div>
+                <span class="weather-unit-celsius">
+                    &#176C
+                </span>
+                <span class="weather-unit-farenheit">
+                    &#176F
+                </span>
+            </div>
+        </div>
+        <div class="weather-body">
+            <h1 class="weather-city">India,IN</h1>
+            <div class="weather-datetime">
+               <p>Date and Time</p>
+            </div>
+            <div class="weather-forecast" >
+              <h3>clear</h3>
+            </div>
+            <div class="weather-icon">
+                <img src="http://openweathermap.org/img/wn/10d@4x.png">
+            </div>
+            <h2 class="weather-temperature">
+                18&#176
+        </h2>
+            <div class="weather-minmax">
+                <h5 >Min: 12&#176</h5>
+                <h5 >Max: 16&#176</h5>
+            </div>
+        </div>
+        <div class="weather-info">
+            <div class="weather-card">
+                <i class="fa-regular fa-map"></i>
+                <div><p>Country</p>
+                    <p class="weather-country">IN</p>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <i class="fa-solid fa-droplet"></i>
+                <div>
+                    <p>Humidity</p>
+                    <p class="weather-humidity">18&#176</p>
+                </div>
+              
+            </div>
+        
+            <div class="weather-card">
+                <i class="fa-solid fa-wind"></i>
+                <div>
+                    <p>Wind</p>
+                    <p class="weather-wind">18&#176</p>
+
+                </div>
+            </div>
+        
+
+
+            <div class="weather-card">
+                <i class="fa-solid fa-gauge-high"></i>
+                <div>
+                    <p>Pressure</p>
+                    <p class="weather-Pressure">18&#176</p>
+                </div>
+            </div> 
+        </div>
+    </div>
+               
+   
+
+</body>
+
+<script>
+    function mykey(event){
+        var x =event.code;
+        if(x =="Enter"){
+            weather()
+        }
+    }
+    const weather = ()=>{
+        let search = search1.value
+        console.log(search);
+        const http=new XMLHttpRequest()
+
+    http.open('get',`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=d0d78c769e3b37a1026898f31e16ff9f`)
+    http.send()
+
+     console.log(http.readyState);
+
+     http.onreadystatechange=()=>{
+        console.log(http.readyState);
+        if(http.readyState==4){
+            if(http.status>=200&& http.status<300){
+                let data = JSON.parse(http.responseText)
+                console.log(data);
+                let cname =data.name
+                console.log(cname);
+                let timezone1 = data.timezone
+                console.log(timezone1);
+                let Countryn= data.sys.country
+                console.log(Countryn);
+                let humdity=data.main.humidity
+                console.log(humdity);
+                let winde=data.wind.speed
+                console.log(winde);
+                let pressures=data.main.pressure
+                console.log(pressures);
+
+                let temp = data.main.temp
+                console.log(temp);
+                let cal =eval(temp-273.15)
+                console.log(cal);
+                let cal1 =cal.toFixed(1)
+                console.log(cal1);
+
+
+                let feels = data.main.feels_like
+                console.log(feels);
+                let fe1=eval(feels-273.15)
+                let fel=fe1.toFixed(1)
+                console.log(fel);
+
+                let weather = data.weather[0].description
+                console.log(weather);
+                let icon = data.weather[0].icon
+
+                let min = data.main.temp_min
+                console.log(min);
+                let min1 = eval(min-273.15)
+                console.log(min1);
+                let min2= min1.toFixed(1)
+                console.log(min2);
+
+                let max = data.main.temp_max
+                console.log(max);
+                let max1= eval(max-273.15)
+                console.log(max1);
+                let max2= max1.toFixed(1)
+                console.log(max2);
+
+                var dt = Date()
+                console.log(dt);
+
+
+                result.innerHTML=`
+                <div>
+        <div class="weather-header">
+            <form class="weather-search">
+                <input id="search1" onkeypress="mykey(event)" type="text" placeholder="${cname}" class="weather-searchform" >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="button" onclick="weather()" class="btn btn-secondary ms-3" value="search">
+               
+            </form>
+            <div>
+                <span class="weather-unit-celsius">
+                    &#176C
+                </span>
+                <span class="weather-unit-farenheit">
+                    &#176F
+                </span>
+            </div>
+        </div>
+        <div class="weather-body">
+            <h1 class="weather-city">
+                ${cname},${Countryn}
+                </h1>
+            <div class="weather-datetime">
+               <p>${dt}</p>
+            </div>
+            <div class="weather-forecast" >
+              <h3>${weather}</h3>
+            </div>
+            <div class="weather-icon">
+                <img src="http://openweathermap.org/img/wn/10d@4x.png">
+               <div> ${icon}&#176</div>
+            </div>
+            <h2 class="weather-temperature">
+                ${cal1}&#176
+        </h2>
+            <div class="weather-minmax">
+                <h5 >Min: ${min2}&#176</h5>
+                <h5 >Max: ${max2}&#176</h5>
+            </div>
+        </div>
+        <div class="weather-info">
+            <div class="weather-card">
+                <i class="fa-regular fa-map"></i>
+                <div><p>Country</p>
+                    <p class="weather-country">${Countryn}</p>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <i class="fa-solid fa-droplet"></i>
+                <div>
+                    <p>Humidity</p>
+                    <p class="weather-humidity">${humdity}&#176</p>
+                </div>
+              
+            </div>
+        
+            <div class="weather-card">
+                <i class="fa-solid fa-wind"></i>
+                <div>
+                    <p>Wind</p>
+                    <p class="weather-wind">${winde}&#176</p>
+
+                </div>
+            </div>
+        
+
+
+            <div class="weather-card">
+                <i class="fa-solid fa-gauge-high"></i>
+                <div>
+                    <p>Pressure</p>
+                    <p class="weather-Pressure">${pressures}&#176</p>
+                </div>
+            </div> 
+        </div>
+    </div>
+                `
+            }
+        }
+     }
+    }
+   
+
+</script>
+</html>
